@@ -1,0 +1,79 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title><%= title %> </title>
+
+    <link rel="stylesheet" href="/css/home.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="todoList">
+        <h2 id="main-heading">MY TODOS</h2>
+      <div class="container">
+        <form action="/add-task" method="post" class="add">
+          <div class="input-container">
+            <input type="text" name="task" placeholder="Add item..." required/><br />
+            <label for="label">add a label</label>
+            <select name="label" id="label">
+              <option disabled selected value> -- select an option -- </option>
+              <option value="home">Home</option>
+              <option value="personal">Personal</option>
+              <option value="office">Office</option>
+              <option value="office">School</option>
+              <option value="office">Other</option>
+            </select><br>
+            <label for="due-date">Due date</label>
+            <input type="date" id="due-date" name="due_date" required>
+          </div>
+          <div class="input-buttons">
+              <div class="input-button add">
+                  <button type="submit" class="add-todo">
+                    <i class="fas fa-plus plus-icon"></i>
+                  </button>
+              </div>
+              <div class="input-button delete">
+                <a href="/delete-completed" class="delete-link">
+                    <i class="far fa-trash-alt delete-icon"></i>
+                </a>
+              </div>
+          </div>
+
+        </form>
+        <ul class="todos align">
+            <% for(let task of tasks){ %>
+                <li class="task">
+                    <input type="checkbox" id="<%=task._id%>" <%= task.checked?'checked':'' %> >
+                    <label for="<%=task._id%>">
+                      <span class="check"></span>
+                      <p> <%= task.task_text %></p>
+                    </label>                                         
+                    <span class="task-label"><%= task.label %> </span>
+                    
+                    <!-- for date in DD-MM-YYYY pattern -->
+                    <% 
+                        var date = ('0'+task.due_date.getDate()).slice(-2);
+                        var month = ('0'+(task.due_date.getMonth()+1)).slice(-2);
+                        var year = task.due_date.getFullYear();
+                    %> 
+                    <span><i>Due:<%= date+'-'+month+'-'+year %></i></span>
+                    <span>
+                        <a href="/delete-task?id=<%=task._id%> ">
+                            <i class="far fa-trash-alt delete-icon"></i>
+                        </a>
+                    </span>
+                </li> 
+            
+            <%} %> 
+        </ul>
+      </div>
+    </div>
+    <script src="/js/toggleTask.js"></script>
+    <script src="/js/minDate.js"></script>
+  </body>
+</html>
